@@ -5,9 +5,8 @@ import { GalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 export const ImagesGallery = ({ images, showModal }) => {
   function onImageClick(evt) {
     if (evt.target.classList.contains('img')) {
-      showModal(evt.target.dataset.largeImgUrl);
+      showModal(evt.target.id);
     }
-    console.log(evt.target.dataset.largeImgUrl);
   }
 
   return (

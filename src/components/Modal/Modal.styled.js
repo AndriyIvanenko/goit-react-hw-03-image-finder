@@ -10,12 +10,25 @@ export const Backdrop = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
-  /* z-index: 1200; */
+  z-index: 1200;
 `;
 
 export const ModalContainer = styled.div`
-  /* max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px); */
-  max-width: 50vw;
-  max-height: 75vh;
+  /* max-width: calc(100vw - 48px); */
+  /* max-height: calc(100vh - 24px); */
+  max-width: 90vw;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+`;
+
+export const ModalHeightContainer = styled.div`
+  height: 90vh;
+
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  /* display: flex;
+  align-items: center; */
 `;

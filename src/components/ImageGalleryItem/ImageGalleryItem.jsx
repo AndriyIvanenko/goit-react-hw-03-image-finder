@@ -9,7 +9,6 @@ export const GalleryItem = ({ image }) => {
         alt={image.tags}
         id={image.id}
         className="img"
-        data-large-img-url={image.largeImageURL}
       />
     </Li>
   );

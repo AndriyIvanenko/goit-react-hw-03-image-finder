@@ -17,26 +17,24 @@ class App extends React.Component {
     request: '',
     page: 1,
     showModal: false,
-    modalImgUrl: '',
+    modalImgId: '',
   };
 
-  timeout = setTimeout(() => {}, 1000);
   async componentDidUpdate(prevProps, prevState) {
     if (
       prevState.request !== this.state.request ||
       prevState.page !== this.state.page
     ) {
       try {
-        // setTimeout();
         const response = await axios.get(
           `/?q=${this.state.request}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
         );
-        setTimeout(() => {
-          this.setState({
-            images: this.state.images.concat(response.data.hits),
-            isLoadind: false,
-          });
-        }, 500);
+        // setTimeout(() => {
+        this.setState({
+          images: this.state.images.concat(response.data.hits),
+          isLoadind: false,
+        });
+        // }, 500);
       } catch (e) {
         console.log(e);
       }
@@ -54,12 +52,18 @@ class App extends React.Component {
   };
 
   toggleModal = data => {
-    this.setState({ showModal: !this.state.showModal, modalImgUrl: data });
+    this.setState({ showModal: !this.state.showModal, modalImgId: data });
+  };
+
+  getModalImage = () => {
+    return this.state.images.find(
+      image => image.id.toString() === this.state.modalImgId
+    );
   };
 
   render() {
     return (
-      <>
+      <div>
         <Searchbar onSearchSubmit={this.getRequest}></Searchbar>
         <ImagesGallery
           images={this.state.images}
@@ -71,10 +75,10 @@ class App extends React.Component {
         )}
         {this.state.showModal && (
           <Modal closeModal={this.toggleModal}>
-            <ModalImg src={this.state.modalImgUrl} alt="" />
+            <ModalImg src={this.getModalImage().largeImageURL} alt="" />
           </Modal>
         )}
-      </>
+      </div>
     );
   }
 }
