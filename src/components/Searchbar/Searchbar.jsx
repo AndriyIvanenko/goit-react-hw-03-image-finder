@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { IoSearch } from 'react-icons/io5';
 import { IconContext } from 'react-icons';
 import React from 'react';
@@ -39,5 +40,9 @@ class Searchbar extends React.Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSearchSubmit: PropTypes.func,
+};
 
 export default Searchbar;

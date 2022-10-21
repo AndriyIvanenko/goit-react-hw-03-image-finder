@@ -4,6 +4,8 @@ import Searchbar from './Searchbar/Searchbar';
 import { Loader } from './Loader/Loader';
 import { LoadMore } from './Button/Button';
 import { ImagesGallery } from './ImageGallery/ImageGallery';
+import Modal from './Modal/Modal';
+import { ModalImg } from './App.styled';
 
 const API_KEY = '29601825-65f79e377599d679ceb963779';
 axios.defaults.baseURL = 'https://pixabay.com/api';
@@ -14,8 +16,11 @@ class App extends React.Component {
     isLoadind: false,
     request: '',
     page: 1,
+    showModal: false,
+    modalImgUrl: '',
   };
 
+  timeout = setTimeout(() => {}, 1000);
   async componentDidUpdate(prevProps, prevState) {
     if (
       prevState.request !== this.state.request ||
@@ -26,11 +31,12 @@ class App extends React.Component {
         const response = await axios.get(
           `/?q=${this.state.request}&page=${this.state.page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
         );
-        // setTimeout()
-        this.setState({
-          images: this.state.images.concat(response.data.hits),
-          isLoadind: false,
-        });
+        setTimeout(() => {
+          this.setState({
+            images: this.state.images.concat(response.data.hits),
+            isLoadind: false,
+          });
+        }, 500);
       } catch (e) {
         console.log(e);
       }
@@ -47,16 +53,28 @@ class App extends React.Component {
     this.setState({ page: this.state.page + 1, isLoadind: true });
   };
 
+  toggleModal = data => {
+    this.setState({ showModal: !this.state.showModal, modalImgUrl: data });
+  };
+
   render() {
     return (
-      <div>
+      <>
         <Searchbar onSearchSubmit={this.getRequest}></Searchbar>
-        <ImagesGallery images={this.state.images}></ImagesGallery>
+        <ImagesGallery
+          images={this.state.images}
+          showModal={this.toggleModal}
+        ></ImagesGallery>
         {this.state.isLoadind && <Loader></Loader>}
         {this.state.images.length > 0 && (
           <LoadMore loadMore={this.loadMore}></LoadMore>
         )}
-      </div>
+        {this.state.showModal && (
+          <Modal closeModal={this.toggleModal}>
+            <ModalImg src={this.state.modalImgUrl} alt="" />
+          </Modal>
+        )}
+      </>
     );
   }
 }
